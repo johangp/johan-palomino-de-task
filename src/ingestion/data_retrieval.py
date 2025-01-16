@@ -1,10 +1,13 @@
 import time
 from datetime import datetime, timedelta
 from typing import Any
+from uuid import uuid4
 
 import requests
 from tenacity import retry, stop_after_attempt, wait_fixed
 
+from .data_ingestion import DataIngestion
+from .data_models import RawResults
 from .exceptions import InvalidApiKey
 
 LISTS_OVERVIEW_ENDPOINT = "https://api.nytimes.com/svc/books/v3/lists/overview.json"
@@ -17,6 +20,7 @@ class DataRetrieval:
     def __init__(self, start_date: datetime, end_date: datetime):
         self.start_date = start_date
         self.end_date = end_date
+        self._data_ingestion = DataIngestion()
 
     def _week_generator(self):
         current_date = self.start_date
@@ -39,6 +43,18 @@ class DataRetrieval:
         if response.status_code == 200:
             return response.json()
 
+    def _create_raw_results(self, content: dict[str, Any]) -> RawResults:
+        raw_results = RawResults(
+            results_id=str(uuid4()),
+            status=content["status"],
+            copyright=content["copyright"],
+            num_results=content["num_results"],
+            bestsellers_date=content["results"]["bestsellers_date"],
+            published_date=content["results"]["published_date"],
+            created_at=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+        )
+        return raw_results
+
     def run(self):
         """
         Execute the process responsible from getting the lists of books from
@@ -49,7 +65,8 @@ class DataRetrieval:
             last_request_time = time.time()
             content = self._request_data(week.strftime(DATE_FORMAT))
 
-            # Data ingestion
+            raw_results = self._create_raw_results(content)
+            self._data_ingestion.ingest_raw_results(raw_results)
 
             time_diff = time.time() - last_request_time
 
