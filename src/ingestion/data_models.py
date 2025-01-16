@@ -30,3 +30,27 @@ class RawList:
 
     def dict(self):
         return asdict(self)
+
+
+@dataclass
+class RawBook:
+    book_id: str
+    list_id: int
+    results_id: str
+    age_group: str
+    author: str
+    contributor: str
+    contributor_note: str
+    description: str
+    price: int
+    primary_isbn13: str
+    primary_isbn10: str
+    publisher: str
+    rank: int
+    title: str
+    created_date: str
+    updated_date: str
+    created_at: float
+
+    def dict(self):
+        return asdict(self)
