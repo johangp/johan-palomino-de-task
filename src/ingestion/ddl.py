@@ -8,3 +8,15 @@ create table if not exists raw_results (
     published_date date not null,         
     created_at date not null
 );"""
+
+raw_lists_ddl = """
+create table if not exists raw_lists (
+	list_id integer not null,
+	results_id varchar not null,
+	list_name varchar not null,
+	display_name varchar not null,
+	updated varchar not null,
+	list_image varchar not null,
+	created_at date not null
+);
+"""
