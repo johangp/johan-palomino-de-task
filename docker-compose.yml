@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: deel 
+      POSTGRES_PASSWORD: deel 
+      POSTGRES_DB: new_york_times
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U"]
+      interval: 5s
+      retries: 5
+    restart: always
