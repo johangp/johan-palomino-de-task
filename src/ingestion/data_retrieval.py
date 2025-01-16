@@ -7,7 +7,7 @@ import requests
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 from .data_ingestion import DataIngestion
-from .data_models import RawResults
+from .data_models import RawList, RawResults
 from .exceptions import InvalidApiKey
 
 LISTS_OVERVIEW_ENDPOINT = "https://api.nytimes.com/svc/books/v3/lists/overview.json"
@@ -55,6 +55,20 @@ class DataRetrieval:
         )
         return raw_results
 
+    def _create_raw_lists(
+        self, content: dict[str, Any], raw_results: RawResults
+    ) -> RawList:
+        raw_list = RawList(
+            list_id=content["list_id"],
+            results_id=raw_results.results_id,
+            list_name=content["list_name"],
+            display_name=content["display_name"],
+            updated=content["updated"],
+            list_image=content["list_image"],
+            created_at=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+        )
+        return raw_list
+
     def run(self):
         """
         Execute the process responsible from getting the lists of books from
@@ -64,11 +78,19 @@ class DataRetrieval:
         for week in self._week_generator():
             last_request_time = time.time()
             published_date = week.strftime(DATE_FORMAT)
-            print(f'Requesting data for {published_date}')
+            print(f"Requesting data for {published_date}")
             content = self._request_data(published_date)
 
+            print('Ingesting raw results.')
             raw_results = self._create_raw_results(content)
             self._data_ingestion.ingest_raw_results(raw_results)
+
+            print('Ingesting raw lists.')
+            raw_lists = []
+            for list_content in content["results"]["lists"]:
+                raw_list = self._create_raw_lists(list_content, raw_results)
+                raw_lists.append(raw_list)
+            self._data_ingestion.ingest_raw_lists(raw_lists)
 
             time_diff = time.time() - last_request_time
 
