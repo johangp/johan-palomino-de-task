@@ -9,10 +9,7 @@ class RawResults:
     num_results: int
     bestsellers_date: str
     published_date: str
-    published_date_description: str
-    previous_published_date: str
-    next_published_date: str
-    created_at: float
+    created_at: str
 
     def dict(self):
         return asdict(self)
@@ -26,7 +23,7 @@ class RawList:
     display_name: str
     updated: str
     list_image: str
-    created_at: float
+    created_at: str
 
     def dict(self):
         return asdict(self)
@@ -50,7 +47,7 @@ class RawBook:
     title: str
     created_date: str
     updated_date: str
-    created_at: float
+    created_at: str
 
     def dict(self):
         return asdict(self)

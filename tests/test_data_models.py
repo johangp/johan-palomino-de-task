@@ -9,10 +9,7 @@ def test_raw_results():
         num_results=200,
         bestsellers_date="2015-03-04",
         published_date="2015-03-04",
-        published_date_description="2015-03-04",
-        previous_published_date="2015-03-04",
-        next_published_date="2015-03-04",
-        created_at=1737054707.6667964,
+        created_at="2025-01-16 21:16:31",
     )
 
     actual_results = raw_results.dict()
@@ -24,10 +21,7 @@ def test_raw_results():
         "num_results": 200,
         "bestsellers_date": "2015-03-04",
         "published_date": "2015-03-04",
-        "published_date_description": "2015-03-04",
-        "previous_published_date": "2015-03-04",
-        "next_published_date": "2015-03-04",
-        "created_at": 1737054707.6667964,
+        "created_at": "2025-01-16 21:16:31",
     }
 
 
@@ -39,7 +33,7 @@ def test_raw_list():
         display_name="combined",
         updated="weekly",
         list_image="url",
-        created_at=1737054707.6667964,
+        created_at="2025-01-16 21:16:31",
     )
 
     actual_list = raw_list.dict()
@@ -51,7 +45,7 @@ def test_raw_list():
         "display_name": "combined",
         "updated": "weekly",
         "list_image": "url",
-        "created_at": 1737054707.6667964,
+        "created_at": "2025-01-16 21:16:31",
     }
 
 
@@ -73,7 +67,7 @@ def test_raw_book():
         title="THE GANGSTER",
         created_date="2016-03-10 17:00:21",
         updated_date="2016-03-10 17:00:21",
-        created_at=1737054707.6667964,
+        created_at="2025-01-16 21:16:31",
     )
 
     actual_book = raw_book.dict()
@@ -95,5 +89,5 @@ def test_raw_book():
         "title": "THE GANGSTER",
         "created_date": "2016-03-10 17:00:21",
         "updated_date": "2016-03-10 17:00:21",
-        "created_at": 1737054707.6667964,
+        "created_at": "2025-01-16 21:16:31",
     }
