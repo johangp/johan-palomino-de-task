@@ -51,7 +51,6 @@ def test_raw_list():
 
 def test_raw_book():
     raw_book = RawBook(
-        book_id="book_id",
         list_id=1,
         results_id="id",
         age_group="",
@@ -73,7 +72,6 @@ def test_raw_book():
     actual_book = raw_book.dict()
 
     assert actual_book == {
-        "book_id": "book_id",
         "list_id": 1,
         "results_id": "id",
         "age_group": "",
