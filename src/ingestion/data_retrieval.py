@@ -7,7 +7,7 @@ import requests
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 from .data_ingestion import DataIngestion
-from .data_models import RawList, RawResults
+from .data_models import RawBook, RawList, RawResults
 from .exceptions import InvalidApiKey
 
 LISTS_OVERVIEW_ENDPOINT = "https://api.nytimes.com/svc/books/v3/lists/overview.json"
@@ -55,7 +55,7 @@ class DataRetrieval:
         )
         return raw_results
 
-    def _create_raw_lists(
+    def _create_raw_list(
         self, content: dict[str, Any], raw_results: RawResults
     ) -> RawList:
         raw_list = RawList(
@@ -69,6 +69,27 @@ class DataRetrieval:
         )
         return raw_list
 
+    def _create_raw_book(self, content: dict[str, Any], raw_list: RawList) -> RawBook:
+        raw_book = RawBook(
+            list_id=raw_list.list_id,
+            results_id=raw_list.results_id,
+            age_group=content["age_group"],
+            author=content["author"],
+            contributor=content["contributor"],
+            contributor_note=content["contributor_note"],
+            description=content["description"],
+            price=content["price"],
+            primary_isbn13=content["primary_isbn13"],
+            primary_isbn10=content["primary_isbn10"],
+            publisher=content["publisher"],
+            rank=content["rank"],
+            title=content["title"],
+            created_date=content["created_date"],
+            updated_date=content["updated_date"],
+            created_at=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+        )
+        return raw_book
+
     def run(self):
         """
         Execute the process responsible from getting the lists of books from
@@ -81,15 +102,23 @@ class DataRetrieval:
             print(f"Requesting data for {published_date}")
             content = self._request_data(published_date)
 
-            print('Ingesting raw results.')
+            print("Ingesting raw results.")
             raw_results = self._create_raw_results(content)
             self._data_ingestion.ingest_raw_results(raw_results)
 
-            print('Ingesting raw lists.')
+            print("Ingesting raw lists.")
             raw_lists = []
             for list_content in content["results"]["lists"]:
-                raw_list = self._create_raw_lists(list_content, raw_results)
+                raw_list = self._create_raw_list(list_content, raw_results)
                 raw_lists.append(raw_list)
+
+                print(f"Ingesting raw books from list {raw_list.list_id}")
+                raw_books = []
+                for book_content in list_content["books"]:
+                    raw_book = self._create_raw_book(book_content, raw_list)
+                    raw_books.append(raw_book)
+                self._data_ingestion.ingest_raw_books(raw_books)
+
             self._data_ingestion.ingest_raw_lists(raw_lists)
 
             time_diff = time.time() - last_request_time

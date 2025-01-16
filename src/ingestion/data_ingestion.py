@@ -2,7 +2,7 @@ import pandas as pd
 import psycopg2
 from sqlalchemy import create_engine
 
-from .data_models import RawList, RawResults
+from .data_models import RawBook, RawList, RawResults
 from .ddl import raw_lists_ddl, raw_results_ddl
 
 CONN_ARGS = {
@@ -42,3 +42,7 @@ class DataIngestion:
     def ingest_raw_lists(self, raw_lists: list[RawList]):
         df = pd.DataFrame([r.dict() for r in raw_lists])
         df.to_sql("raw_lists", self._engine, if_exists="append", index=False)
+
+    def ingest_raw_books(self, raw_books: list[RawBook]):
+        df = pd.DataFrame([r.dict() for r in raw_books])
+        df.to_sql("raw_books", self._engine, if_exists="append", index=False)
