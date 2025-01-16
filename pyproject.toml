@@ -5,7 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
+    "psycopg2-binary>=2.9.10",
     "requests>=2.32.3",
+    "sqlalchemy>=2.0.37",
     "tenacity>=9.0.0",
     "typer>=0.15.1",
 ]
