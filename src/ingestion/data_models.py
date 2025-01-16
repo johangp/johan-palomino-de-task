@@ -31,7 +31,6 @@ class RawList:
 
 @dataclass
 class RawBook:
-    book_id: str
     list_id: int
     results_id: str
     age_group: str
@@ -39,7 +38,7 @@ class RawBook:
     contributor: str
     contributor_note: str
     description: str
-    price: int
+    price: float
     primary_isbn13: str
     primary_isbn10: str
     publisher: str
