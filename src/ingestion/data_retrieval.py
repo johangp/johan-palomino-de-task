@@ -25,7 +25,7 @@ class DataRetrieval:
     def _week_generator(self):
         current_date = self.start_date
 
-        while current_date <= self.end_date:
+        while current_date < self.end_date:
             yield current_date
             current_date = current_date + timedelta(days=6)
             current_date = (
@@ -34,7 +34,7 @@ class DataRetrieval:
 
     @retry(stop=stop_after_attempt(5), wait=wait_fixed(SECONDS_BETWEEN_CALLS))
     def _request_data(self, published_date: str) -> Any:
-        params = {"api-key": API_KEY, "publisd_date": published_date}
+        params = {"api-key": API_KEY, "published_date": published_date}
         response = requests.get(LISTS_OVERVIEW_ENDPOINT, params=params)
 
         if response.status_code == 401:
@@ -63,7 +63,9 @@ class DataRetrieval:
         """
         for week in self._week_generator():
             last_request_time = time.time()
-            content = self._request_data(week.strftime(DATE_FORMAT))
+            published_date = week.strftime(DATE_FORMAT)
+            print(f'Requesting data for {published_date}')
+            content = self._request_data(published_date)
 
             raw_results = self._create_raw_results(content)
             self._data_ingestion.ingest_raw_results(raw_results)
