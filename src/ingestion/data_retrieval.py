@@ -48,6 +48,9 @@ class DataRetrieval:
         for week in self._week_generator():
             last_request_time = time.time()
             content = self._request_data(week.strftime(DATE_FORMAT))
+
+            # Data ingestion
+
             time_diff = time.time() - last_request_time
 
             if time_diff <= SECONDS_BETWEEN_CALLS:
