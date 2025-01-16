@@ -1,4 +1,4 @@
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 
 
 @dataclass
@@ -14,6 +14,19 @@ class RawResults:
     next_published_date: str
     created_at: float
 
+    def dict(self):
+        return asdict(self)
+
+
+@dataclass
+class RawList:
+    list_id: int
+    results_id: str
+    list_name: str
+    display_name: str
+    updated: str
+    list_image: str
+    created_at: float
 
     def dict(self):
         return asdict(self)
