@@ -5,6 +5,7 @@ import pytest
 from pytest_mock import MockFixture
 
 from src.ingestion.data_retrieval import DataRetrieval
+from src.ingestion.exceptions import InvalidApiKey
 
 
 @pytest.fixture()
@@ -25,3 +26,11 @@ def test_data_retrieval_request_data_invokes_requests_get(
 ):
     data_retrieval._request_data("2021-01-01")
     assert mock_requests_get.called
+
+def test_data_retrieval_request_data_invalid_api_key(
+    data_retrieval: DataRetrieval, mock_requests_get: Mock
+):
+    mock_requests_get.return_value.status_code = 401
+
+    with pytest.raises(InvalidApiKey):
+        data_retrieval._request_data("2021-01-01")

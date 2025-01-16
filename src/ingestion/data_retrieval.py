@@ -3,6 +3,8 @@ from typing import Any
 
 import requests
 
+from .exceptions import InvalidApiKey
+
 LISTS_OVERVIEW_ENDPOINT = "https://api.nytimes.com/svc/books/v3/lists/overview.json"
 API_KEY = "H4K4FyQYZKhhlTwLitBhDG5zDjtC2Cib"  # Harcoded for the sake of simplicity
 
@@ -25,6 +27,9 @@ class DataRetrieval:
     def _request_data(self, published_date: str) -> Any:
         params = {"api-key": API_KEY, "publisd_date": published_date}
         response = requests.get(LISTS_OVERVIEW_ENDPOINT, params=params)
+
+        if response.status_code == 401:
+            raise InvalidApiKey
 
         if response.status_code == 200:
             return response.json()
