@@ -104,7 +104,7 @@ class DataRetrieval:
 
             print("Ingesting raw results.")
             raw_results = self._create_raw_results(content)
-            self._data_ingestion.ingest_raw_results(raw_results)
+            self._data_ingestion.ingest_raw([raw_results], "raw_results")
 
             print("Ingesting raw lists.")
             raw_lists = []
@@ -117,9 +117,9 @@ class DataRetrieval:
                 for book_content in list_content["books"]:
                     raw_book = self._create_raw_book(book_content, raw_list)
                     raw_books.append(raw_book)
-                self._data_ingestion.ingest_raw_books(raw_books)
+                self._data_ingestion.ingest_raw(raw_books, "raw_books")
 
-            self._data_ingestion.ingest_raw_lists(raw_lists)
+            self._data_ingestion.ingest_raw(raw_lists, "raw_lists")
 
             time_diff = time.time() - last_request_time
 

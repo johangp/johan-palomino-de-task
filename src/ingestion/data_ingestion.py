@@ -1,9 +1,10 @@
+from typing import Any
+
 import pandas as pd
 import psycopg2
 from sqlalchemy import create_engine
 
-from .data_models import RawBook, RawList, RawResults
-from .ddl import raw_lists_ddl, raw_results_ddl
+from .ddl import raw_books_ddl, raw_lists_ddl, raw_results_ddl
 
 CONN_ARGS = {
     "database": "new_york_times",
@@ -31,18 +32,12 @@ class DataIngestion:
         print("Raw results DDL executed successfully.")
         cursor.execute(raw_lists_ddl)
         print("Raw lists DDL executed successfully.")
+        cursor.execute(raw_books_ddl)
+        print("Raw books DDL executed successfully.")
 
         conn.commit()
         conn.close()
 
-    def ingest_raw_results(self, raw_results: RawResults):
-        df = pd.DataFrame([raw_results.dict()])
-        df.to_sql("raw_results", self._engine, if_exists="append", index=False)
-
-    def ingest_raw_lists(self, raw_lists: list[RawList]):
-        df = pd.DataFrame([r.dict() for r in raw_lists])
-        df.to_sql("raw_lists", self._engine, if_exists="append", index=False)
-
-    def ingest_raw_books(self, raw_books: list[RawBook]):
-        df = pd.DataFrame([r.dict() for r in raw_books])
-        df.to_sql("raw_books", self._engine, if_exists="append", index=False)
+    def ingest_raw(self, raw_values: list[Any], table_name: str):
+        df = pd.DataFrame([r.dict() for r in raw_values])
+        df.to_sql(table_name, self._engine, if_exists="append", index=False)

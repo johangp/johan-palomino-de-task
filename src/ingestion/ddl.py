@@ -16,7 +16,7 @@ create table if not exists raw_lists (
 	list_name varchar not null,
 	display_name varchar not null,
 	updated varchar not null,
-	list_image varchar not null,
+	list_image varchar,
 	created_at date not null
 );
 """
