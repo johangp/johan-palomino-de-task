@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: new_york_times
+    schema: public
+    tables:
+      - name: raw_results
+      - name: raw_lists
+      - name: raw_books
