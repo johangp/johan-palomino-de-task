@@ -2,7 +2,7 @@ new_york_times:
   outputs:
     dev:
       dbname: new_york_times
-      host: localhost
+      host: postgres
       pass: deel
       port: 5432
       schema: public

@@ -10,7 +10,12 @@ ENV PATH="/root/.local/bin/:$PATH"
 
 ADD . /app
 
+COPY new_york_times/profiles.yml /root/.dbt/profiles.yml
+
 WORKDIR /app
 
 RUN uv sync --frozen
+RUN uv pip install .
+
+WORKDIR /app/new_york_times
 
