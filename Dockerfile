@@ -19,3 +19,5 @@ RUN uv pip install .
 
 WORKDIR /app/new_york_times
 
+RUN uv run dbt deps
+
