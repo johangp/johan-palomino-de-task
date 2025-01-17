@@ -1,0 +1,12 @@
+new_york_times:
+  outputs:
+    dev:
+      dbname: new_york_times
+      host: localhost
+      pass: deel
+      port: 5432
+      schema: public
+      threads: 1
+      type: postgres
+      user: deel
+  target: dev
