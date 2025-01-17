@@ -1,5 +1,3 @@
-{{ config(materialized="view") }}
-
 with
     raw_results as (
         select

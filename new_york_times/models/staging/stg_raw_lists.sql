@@ -1,5 +1,3 @@
-{{ config(materialized="view") }}
-
 with
     raw_lists as (
         select
