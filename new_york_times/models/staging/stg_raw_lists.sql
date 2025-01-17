@@ -1,4 +1,4 @@
-{{ config(materialized="incremental", unique_key=["list_id", "results_id"]) }}
+{{ config(materialized="view") }}
 
 with
     raw_lists as (
@@ -15,8 +15,4 @@ with
 
 select *
 from raw_lists
-
-{% if is_incremental() %}
-    where created_at > (select max(created_at) from {{ this }})
-{% endif %}
 
