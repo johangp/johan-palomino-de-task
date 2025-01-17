@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: deel 
       POSTGRES_DB: new_york_times
     volumes:
-      - ~/apps/postgres:/var/lib/postgresql/data
+      - postgres-db-volume:/var/lib/postgresql/data
     ports:
       - 5432:5432
     healthcheck:
@@ -14,3 +14,21 @@ services:
       interval: 5s
       retries: 5
     restart: always
+    networks:
+      - app_network
+
+  ingestion:
+    build: .
+    image: ingestion-image
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+
+volumes:
+  postgres-db-volume:
+
+networks:
+  app_network:
+    driver: bridge
+

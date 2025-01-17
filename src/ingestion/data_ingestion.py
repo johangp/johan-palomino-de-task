@@ -10,7 +10,7 @@ CONN_ARGS = {
     "database": "new_york_times",
     "user": "deel",
     "password": "deel",
-    "host": "localhost",
+    "host": "postgres",
     "port": "5432",
 }
 
