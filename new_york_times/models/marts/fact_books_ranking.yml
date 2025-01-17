@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: fact_books_rankings
+    description: "Fact table capturing the rankings of books on various lists."
+    columns:
+      - name: ranking_id
+        description: "Unique identifier for the ranking."
+        tests:
+          - not_null
+      - name: book_id
+        description: "Foreign key to dim_books."
+        tests:
+          - not_null
+          - unique
+      - name: list_id
+        description: "Foreign key to dim_lists."
+        tests:
+          - not_null
+      - name: results_id
+        description: "Reference to the raw results data."
+        tests:
+          - not_null
+      - name: rank
+        description: "The rank of the book on the list."
+        tests:
+          - not_null
+      - name: bestsellers_date
+        description: "The date when the rankings were calculated."
+        tests:
+          - not_null
+      - name: published_date
+        description: "The date when the rankings were published."
+        tests:
+          - not_null

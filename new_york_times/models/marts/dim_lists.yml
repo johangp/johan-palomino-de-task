@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: dim_lists
+    description: "Dimension table for storing details about NYT book lists."
+    columns:
+      - name: list_id
+        description: "Unique identifier for the list."
+        tests:
+          - not_null
+          - unique
+      - name: list_name
+        description: "Technical name of the list."
+        tests:
+          - not_null
+      - name: display_name
+        description: "User-friendly name of the list."
+        tests:
+          - not_null
+      - name: updated
+        description: "Frequency of updates for this list (e.g., WEEKLY)."
+        tests:
+          - not_null
+      - name: list_image
+        description: "URL of the list's associated image, if available."
