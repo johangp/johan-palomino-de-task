@@ -19,7 +19,7 @@ services:
 
   ingestion:
     build: .
-    image: ingestion-image
+    image: de-task
     depends_on:
       - postgres
     networks:
