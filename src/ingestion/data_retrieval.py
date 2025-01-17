@@ -4,7 +4,6 @@ from typing import Any
 from uuid import uuid4
 
 import requests
-from tenacity import retry, stop_after_attempt, wait_fixed
 
 from .data_ingestion import DataIngestion
 from .data_models import RawBook, RawList, RawResults
@@ -32,7 +31,6 @@ class DataRetrieval:
                 self.end_date if current_date > self.end_date else current_date
             )
 
-    @retry(stop=stop_after_attempt(5), wait=wait_fixed(SECONDS_BETWEEN_CALLS))
     def _request_data(self, published_date: str) -> Any:
         params = {"api-key": API_KEY, "published_date": published_date}
         response = requests.get(LISTS_OVERVIEW_ENDPOINT, params=params)
