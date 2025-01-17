@@ -18,7 +18,7 @@ with
             updated_date,
             created_at,
             row_number() over (
-                partition by list_id, primary_isbn13
+                partition by title, primary_isbn13
                 order by updated_date desc, created_at desc
             ) as row_num
         from {{ source("raw_data", "raw_books") }}

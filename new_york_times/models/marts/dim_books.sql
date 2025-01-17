@@ -1,7 +1,7 @@
 with
     deduplicated as (
         select distinct
-            {{ dbt_utils.generate_surrogate_key(["title", "author"]) }} as book_id,
+            {{ dbt_utils.generate_surrogate_key(["title", "primary_isbn13"]) }} as book_id,
             title,
             author,
             contributor,
